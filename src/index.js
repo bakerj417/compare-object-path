@@ -1,5 +1,11 @@
 import _ from 'lodash';
 
+// default config
+const defaultConfig = {
+  defaultValue: true,
+  omitPathsOnly: false
+};
+
 /**
  * building default config and overwriting with passed config
  *
@@ -8,11 +14,6 @@ import _ from 'lodash';
  * @returns {Object} Returns config with overwritten properties
  */
 function buildConfig(passedConfig) {
-  const defaultConfig = {
-    defaultValue: true,
-    omitPathsOnly: false
-  };
-
   if (!passedConfig) {
     return defaultConfig;
   }
@@ -29,7 +30,7 @@ function buildConfig(passedConfig) {
  * @param {Object} passedConfig Object of config overwrites
  * @returns {boolean} Returns whether component should be updated
  */
-export default function shouldUpdate(propPaths, currProps, nextProps, passedConfig) {
+export default function compareObjectPath(propPaths, currProps, nextProps, passedConfig) {
   const config = buildConfig(passedConfig);
 
   // if nothing was given in paths, we return default and warn if debug is on

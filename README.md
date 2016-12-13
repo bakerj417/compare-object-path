@@ -1,29 +1,30 @@
-# React Should Update
+# Compare Object Path
 
 ## Synopsis
-This is a js library to allow easy setup for shouldComponentUpdate by
-using passed paths to compare the equality of currProps vs nextProps.
+This is a js library to allow easy setup for comparing 2 object by
+using passed paths to compare the equality of one object to the other.
 
 ## Motivation
 
-I built this to help with larger components that
-need a cleaner way of implementing shouldComponentUpdate.
+I built this to help with larger reactJs components that need a cleaner way of implementing 
+shouldComponentUpdate. However, in building it I found it was just an object comparison util
+function so made it generic to be used in more that just reactJs.
 
 ## Installation
 ```
-npm install react-should-update
+npm install compare-object-path
 ```
 
 ## Basic Usage
 ```javascript
-import shouldUpdate from 'react-should-update';
+import compareObjectPath from 'compare-object-path';
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // will only update if 'test.path.i.care.about' or 
     // 'test.other.path.i.care.about' changes between current and next props 
-    return shouldUpdate([
+    return compareObjectPath([
       'test.path.i.care.about',
       'test.other.path.i.care.about'
       ], this.props, nextProps);
@@ -36,7 +37,7 @@ export default class testComponent extends Component {
 ```
 
 ## Params
-The shouldUpdate function takes 4 params with the first 3 being required
+The compareObjectPath function takes 4 params with the first 3 being required
 
 | param        | description                                                           | required  |
 | ------------ |:---------------------------------------------------------------------:| ---------:|
@@ -52,19 +53,19 @@ They must always be passed as an array of strings/strings[] or objects.
 #### Examples
 ```javascript
 // array of strings
-shouldUpdate([
+compareObjectPath([
       'test.path.i.care.about',
       'test.other.path.i.care.about'
       ], this.props, nextProps);
 
 // array of strings and string arrays
-shouldUpdate([
+compareObjectPath([
       'test.path.i.care.about',
       ['test','other','path','i','care','about']
       ], this.props, nextProps);
 
 // array of string and objects with/without omit
-shouldUpdate([
+compareObjectPath([
       'test.path.i.care.about',
       ['test','other','path','i','care','about'],
       {
@@ -96,7 +97,7 @@ but omit a few inner properties
 
 ### passedConfig (optional)
 This is the config passed by the user to overwrite the default config. This is the 
-four param to shouldUpdate can be passed and it has 2 options available
+four param to compareObjectPath can be passed and it has 2 options available
 
 ```javascript
 {
@@ -108,14 +109,14 @@ four param to shouldUpdate can be passed and it has 2 options available
 #### Examples
 ##### Default Value usage:
 ```javascript
-import shouldUpdate from 'react-should-update';
+import compareObjectPath from 'compare-object-path';
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // no paths are passed causing an error, by default we would return true, but in this case 
     // we set a default of false so the funciton would return false
-    return shouldUpdate(null, this.props, nextProps, { defaultValue: false });
+    return compareObjectPath(null, this.props, nextProps, { defaultValue: false });
   }
 
   render() {
@@ -127,14 +128,14 @@ export default class testComponent extends Component {
 ##### Omit Paths Only usage: 
 ###### I use this a lot for child components where all props passed to the child should be checked EXCEPT for things like, in my case, functions
 ```javascript
-import shouldUpdate from 'react-should-update'
+import compareObjectPath from 'compare-object-path'
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // we want to check all of props but remove function1 
     // and function2 from props before checking
-    return shouldUpdate([
+    return compareObjectPath([
       'function1',
       'function2'
       ], this.props, nextProps, { omitPathsOnly: true });
