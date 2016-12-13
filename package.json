@@ -1,6 +1,6 @@
 {
   "name": "compare-object-path",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Library that uses passed paths to determine if the component should update",
   "main": "lib/index.js",
   "scripts": {

@@ -17,14 +17,14 @@ npm install compare-object-path
 
 ## Basic Usage
 ```javascript
-import compareObjectPath from 'compare-object-path';
+import arePathsDiff from 'compare-object-path';
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // will only update if 'test.path.i.care.about' or 
     // 'test.other.path.i.care.about' changes between current and next props 
-    return compareObjectPath([
+    return arePathsDiff([
       'test.path.i.care.about',
       'test.other.path.i.care.about'
       ], this.props, nextProps);
@@ -37,35 +37,35 @@ export default class testComponent extends Component {
 ```
 
 ## Params
-The compareObjectPath function takes 4 params with the first 3 being required
+The arePathsDiff function takes 4 params with the first 3 being required
 
-| param        | description                                                           | required  |
-| ------------ |:---------------------------------------------------------------------:| ---------:|
-| passedPaths  | These are the paths that you wish to check in current/next props      | true      |
-| currProps    | This is usually `this.props`                                          | true      |
-| nextProps    | This is the `nextProps` come from `shouldComponentUpdate` function    | true      |
-| passedConfig | This is the config passed by the user to overwrite the default config | false     |
+| param        | description                                                                                                     | required  |
+| ------------ |:---------------------------------------------------------------------------------------------------------------:| ---------:|
+| passedPaths  | These are the paths that you wish to compare between first and second object.                                   | true      |
+| firstObject  | First object for comparison. For reactjs, this is usually `this.props`.                                         | true      |
+| nextProps    | Second object for comparison. For reactjs, this is `nextProps` that come from `shouldComponentUpdate` function. | true      |
+| passedConfig | This is the config passed by the user to overwrite the default config.                                          | false     |
 
 ### passedPaths
-These are the paths that you wish to check in current/next props. 
-They must always be passed as an array of strings/strings[] or objects.
+These are the paths that you wish to compare between first and second object. 
+They must always be passed as an array of strings|strings[]|objects.
 
 #### Examples
 ```javascript
 // array of strings
-compareObjectPath([
+arePathsDiff([
       'test.path.i.care.about',
       'test.other.path.i.care.about'
       ], this.props, nextProps);
 
 // array of strings and string arrays
-compareObjectPath([
+arePathsDiff([
       'test.path.i.care.about',
       ['test','other','path','i','care','about']
       ], this.props, nextProps);
 
 // array of string and objects with/without omit
-compareObjectPath([
+arePathsDiff([
       'test.path.i.care.about',
       ['test','other','path','i','care','about'],
       {
@@ -91,32 +91,32 @@ passedPaths param can take an object as a path and this object looks like:
 }
 ```
 
-This option is great for very complex props where you may want to check the entirety of 
-one property object. However, on another prop you may want to check the whole object 
-but omit a few inner properties
+This option is great for very complex objects where you may want to check the entirety of 
+one object property. However, on another property within the same object you may want to 
+check the whole object property but omit a few inner properties.
 
 ### passedConfig (optional)
 This is the config passed by the user to overwrite the default config. This is the 
-four param to compareObjectPath can be passed and it has 2 options available
+fourth param to arePathsDiff can be passed and it has 2 options available.
 
 ```javascript
 {
   defaultValue: boolean (default: true, this value is return when an error occurs),
   omitPathsOnly: boolean (default: false, this is used to assume you want to 
-    check all props and used passed paths as omits)
+    check all object properties and used passed paths as omits)
 }
 ```
 #### Examples
 ##### Default Value usage:
 ```javascript
-import compareObjectPath from 'compare-object-path';
+import arePathsDiff from 'compare-object-path';
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // no paths are passed causing an error, by default we would return true, but in this case 
     // we set a default of false so the funciton would return false
-    return compareObjectPath(null, this.props, nextProps, { defaultValue: false });
+    return arePathsDiff(null, this.props, nextProps, { defaultValue: false });
   }
 
   render() {
@@ -126,16 +126,16 @@ export default class testComponent extends Component {
 ```
 
 ##### Omit Paths Only usage: 
-###### I use this a lot for child components where all props passed to the child should be checked EXCEPT for things like, in my case, functions
+###### I use this a lot for child components in reactJs where all props that are passed to the child should be checked EXCEPT for things like, in my case, functions
 ```javascript
-import compareObjectPath from 'compare-object-path'
+import arePathsDiff from 'compare-object-path'
 
 export default class testComponent extends Component {
 
   shouldComponentUpdate(nextProps) {
     // we want to check all of props but remove function1 
     // and function2 from props before checking
-    return compareObjectPath([
+    return arePathsDiff([
       'function1',
       'function2'
       ], this.props, nextProps, { omitPathsOnly: true });
