@@ -34,8 +34,8 @@ function buildConfig(passedConfig) {
 export default function arePathsDiff(passedPaths, firstObject, secondObject, passedConfig) {
   const config = buildConfig(passedConfig);
 
-  // if nothing was given in paths, we return default and warn if debug is on
-  if (typeof passedPaths !== 'object' || passedPaths === null) {
+  // if empty paths, return defaultValue from config
+  if (!Array.isArray(passedPaths) || passedPaths.length === 0) {
     return config.defaultValue;
   }
 
