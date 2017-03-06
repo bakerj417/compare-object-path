@@ -1,4 +1,3 @@
-const LodashModuleReplacementPlugin = require('lodash-webpack-plugin');
 const webpack = require('webpack');
 
 module.exports = {
@@ -20,7 +19,6 @@ module.exports = {
     }]
   },
   plugins: [
-    new LodashModuleReplacementPlugin,
     new webpack.optimize.OccurrenceOrderPlugin,
     new webpack.optimize.UglifyJsPlugin
   ]
